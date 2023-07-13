@@ -25,7 +25,7 @@ VOLUME ["/Open-IM-Server/logs", "/Open-IM-Server/config", "/Open-IM-Server/scrip
 
 # Copy scripts and binary files to the production image
 COPY --from=build /Open-IM-Server/scripts /Open-IM-Server/scripts
-COPY --from=build /Open-IM-Server/_output/bin/platforms/linux/arm64 /Open-IM-Server/_output/bin/platforms/linux/arm64
+COPY --from=build /Open-IM-Server/_output/bin/platforms/linux/amd64 /Open-IM-Server/_output/bin/platforms/linux/amd64
 
 WORKDIR /Open-IM-Server/scripts
 
