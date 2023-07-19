@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version=errcode
+version=release-v3.0.0-beta.0
 repository=${1}
 if [[ -z ${repository} ]]
 then

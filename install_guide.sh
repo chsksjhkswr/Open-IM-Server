@@ -94,7 +94,7 @@ install_docker_compose() {
     git clone https://github.com/OpenIMSDK/Open-IM-Server.git --recursive;
     set +e
     cd ./Open-IM-Server
-    git checkout errcode
+    git checkout release-v3.0.0-beta.0
     echo "======== git clone success ========"
     source .env
     if [ $DATA_DIR = "./" ]; then
