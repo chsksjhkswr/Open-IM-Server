@@ -1,3 +1,17 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package zookeeper
 
 import (
@@ -6,17 +20,20 @@ import (
 	"io"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/log"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/errs"
-	"github.com/pkg/errors"
 
 	"github.com/go-zookeeper/zk"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
 )
 
-var ErrConnIsNil = errors.New("conn is nil")
-var ErrConnIsNilButLocalNotNil = errors.New("conn is nil, but local is not nil")
+var (
+	ErrConnIsNil               = errors.New("conn is nil")
+	ErrConnIsNilButLocalNotNil = errors.New("conn is nil, but local is not nil")
+)
 
 func (s *ZkClient) watch() {
 	for {
@@ -40,7 +57,6 @@ func (s *ZkClient) watch() {
 		case zk.EventNotWatching:
 		}
 	}
-
 }
 
 func (s *ZkClient) GetConnsRemote(serviceName string) (conns []resolver.Address, err error) {

@@ -1,8 +1,25 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package rpcclient
 
 import (
 	"context"
 	"encoding/json"
+
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/config"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/constant"
@@ -11,9 +28,7 @@ import (
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/proto/msg"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/proto/sdkws"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/utils"
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
-	// "google.golang.org/protobuf/proto"
+	// "google.golang.org/protobuf/proto".
 )
 
 func newContentTypeConf() map[int32]config.NotificationConf {
@@ -56,8 +71,9 @@ func newContentTypeConf() map[int32]config.NotificationConf {
 		constant.ConversationUnreadNotification:      config.Config.Notification.ConversationChanged,
 		constant.ConversationPrivateChatNotification: config.Config.Notification.ConversationSetPrivate,
 		// msg
-		constant.MsgRevokeNotification: {IsSendMsg: false, ReliabilityLevel: constant.ReliableNotificationNoMsg},
-		constant.HasReadReceipt:        {IsSendMsg: false, ReliabilityLevel: constant.ReliableNotificationNoMsg},
+		constant.MsgRevokeNotification:  {IsSendMsg: false, ReliabilityLevel: constant.ReliableNotificationNoMsg},
+		constant.HasReadReceipt:         {IsSendMsg: false, ReliabilityLevel: constant.ReliableNotificationNoMsg},
+		constant.DeleteMsgsNotification: {IsSendMsg: false, ReliabilityLevel: constant.ReliableNotificationNoMsg},
 	}
 }
 
@@ -101,7 +117,7 @@ func newSessionTypeConf() map[int32]int32 {
 		constant.ConversationUnreadNotification:      constant.SingleChatType,
 		constant.ConversationPrivateChatNotification: constant.SingleChatType,
 		// delete
-		constant.MsgDeleteNotification: constant.SingleChatType,
+		constant.DeleteMsgsNotification: constant.SingleChatType,
 	}
 }
 

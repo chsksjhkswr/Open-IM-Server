@@ -26,10 +26,7 @@ import (
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/proto/sdkws"
 )
 
-func (m *msgServer) GetConversationsHasReadAndMaxSeq(
-	ctx context.Context,
-	req *msg.GetConversationsHasReadAndMaxSeqReq,
-) (*msg.GetConversationsHasReadAndMaxSeqResp, error) {
+func (m *msgServer) GetConversationsHasReadAndMaxSeq(ctx context.Context, req *msg.GetConversationsHasReadAndMaxSeqReq) (*msg.GetConversationsHasReadAndMaxSeqResp, error) {
 	conversationIDs, err := m.ConversationLocalCache.GetConversationIDs(ctx, req.UserID)
 	if err != nil {
 		return nil, err
@@ -42,7 +39,7 @@ func (m *msgServer) GetConversationsHasReadAndMaxSeq(
 	if err != nil {
 		return nil, err
 	}
-	var conversationMaxSeqMap = make(map[string]int64)
+	conversationMaxSeqMap := make(map[string]int64)
 	for _, conversation := range conversations {
 		if conversation.MaxSeq != 0 {
 			conversationMaxSeqMap[conversation.ConversationID] = conversation.MaxSeq

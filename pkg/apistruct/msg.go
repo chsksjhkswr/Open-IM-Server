@@ -1,48 +1,18 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package apistruct
-
-type DelMsgReq struct {
-	UserID      string   `json:"userID,omitempty"      binding:"required"`
-	SeqList     []uint32 `json:"seqList,omitempty"     binding:"required"`
-	OperationID string   `json:"operationID,omitempty" binding:"required"`
-}
-
-type DelMsgResp struct {
-}
-
-type CleanUpMsgReq struct {
-	UserID      string `json:"userID"      binding:"required"`
-	OperationID string `json:"operationID" binding:"required"`
-}
-
-type CleanUpMsgResp struct {
-}
-
-type DelSuperGroupMsgReq struct {
-	UserID      string   `json:"userID"            binding:"required"`
-	GroupID     string   `json:"groupID"           binding:"required"`
-	SeqList     []uint32 `json:"seqList,omitempty"`
-	IsAllDelete bool     `json:"isAllDelete"`
-	OperationID string   `json:"operationID"       binding:"required"`
-}
-
-type DelSuperGroupMsgResp struct {
-}
-
-type MsgDeleteNotificationElem struct {
-	GroupID     string   `json:"groupID"`
-	IsAllDelete bool     `json:"isAllDelete"`
-	SeqList     []uint32 `json:"seqList"`
-}
-
-type SetMsgMinSeqReq struct {
-	UserID      string `json:"userID"      binding:"required"`
-	GroupID     string `json:"groupID"`
-	MinSeq      uint32 `json:"minSeq"      binding:"required"`
-	OperationID string `json:"operationID" binding:"required"`
-}
-
-type SetMsgMinSeqResp struct {
-}
 
 type PictureBaseInfo struct {
 	UUID   string `mapstructure:"uuid"`
@@ -103,7 +73,7 @@ type CustomElem struct {
 	Extension   string `mapstructure:"extension"`
 }
 type TextElem struct {
-	Content string `mapstructure:"content" validate:"required"`
+	Text string `mapstructure:"text" validate:"required"`
 }
 
 type RevokeElem struct {

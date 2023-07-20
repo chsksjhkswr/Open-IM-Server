@@ -74,7 +74,7 @@ api:
 
 object:
   enable: "minio"                           #使用minio
-  apiURL: "http://127.0.0.1:10002/object/"
+  apiURL: "http://127.0.0.1:10002/object/"  #地址需要app能访问到
   minio:
     bucket: "openim"                      #不建议修改
     endpoint: "http://127.0.0.1:10005"      #minio对外服务的ip和端口，app要能访问此ip和端口
@@ -117,10 +117,10 @@ rpcRegisterName: #rpc注册服务名，不建议修改
   openImThirdName: Third
 
 log:
-  storageLocation: ../logs/           #存放目录
-  rotationTime: 24                    #日志旋转时间
-  remainRotationCount: 2              #日志数量
-  remainLogLevel: 6                   #日志级别 6表示全都打印，
+  storageLocation: ../../../../../logs/   #存放目录
+  rotationTime: 24                        #日志旋转时间
+  remainRotationCount: 2                  #日志数量
+  remainLogLevel: 6                       #日志级别 6表示全都打印，
   isStdout: false
   isJson: false
   withStack: false

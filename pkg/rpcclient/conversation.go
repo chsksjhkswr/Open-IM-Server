@@ -1,14 +1,29 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package rpcclient
 
 import (
 	"context"
 	"fmt"
 
+	"google.golang.org/grpc"
+
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/config"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/discoveryregistry"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/errs"
 	pbConversation "github.com/OpenIMSDK/Open-IM-Server/pkg/proto/conversation"
-	"google.golang.org/grpc"
 )
 
 type Conversation struct {
@@ -57,6 +72,7 @@ func (c *ConversationRpcClient) SetConversationMaxSeq(ctx context.Context, owner
 	_, err := c.Client.SetConversationMaxSeq(ctx, &pbConversation.SetConversationMaxSeqReq{OwnerUserID: ownerUserIDs, ConversationID: conversationID, MaxSeq: maxSeq})
 	return err
 }
+
 func (c *ConversationRpcClient) SetConversations(ctx context.Context, userIDs []string, conversation *pbConversation.ConversationReq) error {
 	_, err := c.Client.SetConversations(ctx, &pbConversation.SetConversationsReq{UserIDs: userIDs, Conversation: conversation})
 	return err
@@ -79,6 +95,9 @@ func (c *ConversationRpcClient) GetConversation(ctx context.Context, ownerUserID
 }
 
 func (c *ConversationRpcClient) GetConversationsByConversationID(ctx context.Context, conversationIDs []string) ([]*pbConversation.Conversation, error) {
+	if len(conversationIDs) == 0 {
+		return nil, nil
+	}
 	resp, err := c.Client.GetConversationsByConversationID(ctx, &pbConversation.GetConversationsByConversationIDReq{ConversationIDs: conversationIDs})
 	if err != nil {
 		return nil, err
@@ -89,8 +108,18 @@ func (c *ConversationRpcClient) GetConversationsByConversationID(ctx context.Con
 	return resp.Conversations, nil
 }
 
-func (c *ConversationRpcClient) GetConversations(ctx context.Context, ownerUserID string, conversationIDs []string) ([]*pbConversation.Conversation, error) {
-	resp, err := c.Client.GetConversations(ctx, &pbConversation.GetConversationsReq{OwnerUserID: ownerUserID, ConversationIDs: conversationIDs})
+func (c *ConversationRpcClient) GetConversations(
+	ctx context.Context,
+	ownerUserID string,
+	conversationIDs []string,
+) ([]*pbConversation.Conversation, error) {
+	if len(conversationIDs) == 0 {
+		return nil, nil
+	}
+	resp, err := c.Client.GetConversations(
+		ctx,
+		&pbConversation.GetConversationsReq{OwnerUserID: ownerUserID, ConversationIDs: conversationIDs},
+	)
 	if err != nil {
 		return nil, err
 	}

@@ -1,17 +1,33 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package oss
 
 import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/config"
-	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/db/s3"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+
+	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/config"
+	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/db/s3"
 )
 
 const (
@@ -132,7 +148,11 @@ func (o *OSS) AuthSign(ctx context.Context, uploadID string, name string, expire
 		}
 		request.Header.Set(oss.HTTPHeaderHost, request.Host)
 		request.Header.Set(oss.HTTPHeaderDate, time.Now().UTC().Format(http.TimeFormat))
-		authorization := fmt.Sprintf(`OSS %s:%s`, o.credentials.GetAccessKeyID(), o.getSignedStr(request, fmt.Sprintf(`/%s/%s?partNumber=%d&uploadId=%s`, o.bucket.BucketName, name, partNumber, uploadID), o.credentials.GetAccessKeySecret()))
+		authorization := fmt.Sprintf(
+			`OSS %s:%s`,
+			o.credentials.GetAccessKeyID(),
+			o.getSignedStr(request, fmt.Sprintf(`/%s/%s?partNumber=%d&uploadId=%s`, o.bucket.BucketName, name, partNumber, uploadID), o.credentials.GetAccessKeySecret()),
+		)
 		request.Header.Set(oss.HTTPHeaderAuthorization, authorization)
 		result.Parts[i] = s3.SignPart{
 			PartNumber: partNumber,
@@ -241,15 +261,15 @@ func (o *OSS) ListUploadedParts(ctx context.Context, uploadID string, name strin
 }
 
 func (o *OSS) AccessURL(ctx context.Context, name string, expire time.Duration, opt *s3.AccessURLOption) (string, error) {
-	//var opts []oss.Option
-	//if opt != nil {
-	//	if opt.ContentType != "" {
-	//		opts = append(opts, oss.ContentType(opt.ContentType))
-	//	}
-	//	if opt.ContentDisposition != "" {
-	//		opts = append(opts, oss.ContentDisposition(opt.ContentDisposition))
-	//	}
-	//}
+	var opts []oss.Option
+	if opt != nil {
+		if opt.ContentType != "" {
+			opts = append(opts, oss.ResponseContentType(opt.ContentType))
+		}
+		if opt.Filename != "" {
+			opts = append(opts, oss.ResponseContentDisposition(`attachment; filename="`+opt.Filename+`"`))
+		}
+	}
 	if expire <= 0 {
 		expire = time.Hour * 24 * 365 * 99 // 99 years
 	} else if expire < time.Second {

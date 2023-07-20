@@ -22,11 +22,6 @@ source $SCRIPTS_ROOT/style_info.sh
 source $SCRIPTS_ROOT/path_info.sh
 source $SCRIPTS_ROOT/function.sh
 
-cd $SCRIPTS_ROOT
-
-chmod +x build_all_service.sh
-./build_all_service.sh
-
 echo -e "${YELLOW_PREFIX}=======>SCRIPTS_ROOT=$SCRIPTS_ROOT${COLOR_SUFFIX}"
 echo -e "${YELLOW_PREFIX}=======>OPENIM_ROOT=$OPENIM_ROOT${COLOR_SUFFIX}"
 echo -e "${YELLOW_PREFIX}=======>pwd=$PWD${COLOR_SUFFIX}"
@@ -55,9 +50,9 @@ sleep 1
 cd ${msg_transfer_binary_root}
 for ((i = 0; i < ${msg_transfer_service_num}; i++)); do
       prome_port=${prome_ports[$i]}
-      cmd="nohup ./${openim_msgtransfer}  --config_folder_path ${configfile_path} --configFolderPath ${log_path}"
+      cmd="nohup ./${openim_msgtransfer}  --config_folder_path ${configfile_path} "
       if [ $prome_port != "" ]; then
-        cmd="$cmd --prometheus_port $prome_port  --config_folder_path ${configfile_path} --configFolderPath ${log_path}"
+        cmd="$cmd --prometheus_port $prome_port  --config_folder_path ${configfile_path} "
       fi
       echo "==========================start msg_transfer server===========================">>$OPENIM_ROOT/logs/openIM.log
       $cmd >>$OPENIM_ROOT/logs/openIM.log 2>&1 &

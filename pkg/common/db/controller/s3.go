@@ -1,12 +1,27 @@
+// Copyright © 2023 OpenIM. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package controller
 
 import (
 	"context"
+	"path/filepath"
+	"time"
+
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/db/s3"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/db/s3/cont"
 	"github.com/OpenIMSDK/Open-IM-Server/pkg/common/db/table/relation"
-	"path/filepath"
-	"time"
 )
 
 type S3Database interface {
@@ -62,9 +77,7 @@ func (s *s3Database) AccessURL(ctx context.Context, name string, expire time.Dur
 	}
 	opt := &s3.AccessURLOption{
 		ContentType: obj.ContentType,
-	}
-	if filename := filepath.Base(obj.Name); filename != "" {
-		opt.ContentDisposition = `attachment; filename=` + filename
+		Filename:    filepath.Base(obj.Name),
 	}
 	expireTime := time.Now().Add(expire)
 	rawURL, err := s.s3.AccessURL(ctx, obj.Key, expire, opt)
