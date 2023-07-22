@@ -62,9 +62,9 @@ git checkout release-v3.0 #or other release branch
 ```
 USER=root #no need to modify
 PASSWORD=openIM123  #A combination of 8 or more numbers and letters, this password applies to redis, mysql, mongo, as well as accessSecret in config/config.yaml
-ENDPOINT=http://127.0.0.1:10005 #minio's external service IP and port, or use the domain name storage.xx.xx, the app must be able to access this IP and port or domain,
-API_URL=http://127.0.0.1:10002/object/ #the app must be able to access this IP and port or domain,
-DATA_DIR=./  #designate large disk directory
+ENDPOINT=http://127.0.0.1:10005 #minio's external service IP and port, or use the domain name storage.xx.xx, the app must be able to access this IP and port or domain
+API_URL=http://127.0.0.1:10002/object/ #the app must be able to access this IP and port or domain
+DATA_DIR=./  #designate large disk directory 
 ```
 
 1. Deploy and start
